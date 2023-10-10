@@ -298,6 +298,12 @@ class ExtraNetworksPage:
             if os.path.isfile(file):
                 return self.link_preview(file)
 
+        civitai_info_path = path + ".civitai.info"
+        if os.path.isfile(civitai_info_path):
+            info_dict = json.load(open(civitai_info_path, 'r'))
+            if len(info_dict.get('images', [])) > 0:
+                return info_dict['images'][0]['url']
+
         return None
 
     def find_description(self, path):
