@@ -110,6 +110,14 @@ class UserMetadataEditor:
                 ('Modified: ', datetime.datetime.fromtimestamp(stats.st_mtime).strftime('%Y-%m-%d %H:%M')),
             ]
 
+            path, _ = os.path.splitext(filename)
+            info_file_path = path + ".civitai.info"
+            if os.path.isfile(info_file_path):
+                model_id = json.load(open(info_file_path, 'r')).get('modelId', 0)
+                if model_id > 0:
+                    url = f"https://civitai.com/models/{model_id}/"
+                    params.append(('Model URL: ', f"<a href=\"{url}\" target=\"_blank\">{url}</a>"))
+
             return params
         except Exception as e:
             errors.display(e, f"reading info for {name}")
