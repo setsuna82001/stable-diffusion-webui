@@ -112,11 +112,16 @@ class UserMetadataEditor:
 
             path, _ = os.path.splitext(filename)
             info_file_path = path + ".civitai.info"
+
             if os.path.isfile(info_file_path):
-                model_id = json.load(open(info_file_path, 'r')).get('modelId', 0)
+                json_table = json.load(open(info_file_path, 'r'))
+                model_id = json_table.get('modelId', 0)
                 if model_id > 0:
                     url = f"https://civitai.com/models/{model_id}/"
                     params.append(('Model URL: ', f"<a href=\"{url}\" target=\"_blank\">{url}</a>"))
+
+                trained_words = json_table.get('trainedWords', [])
+                params.append(('Trained Words: ', ', '.join(trained_words)))
 
             return params
         except Exception as e:
